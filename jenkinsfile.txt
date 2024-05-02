@@ -53,7 +53,7 @@ pipeline {
             // Send email notification on success
             emailext subject: "Pipeline Successful",
                       body: "Pipeline run successful!",
-                      to: "your@email.com"
+                      to: "chathurikadeshani094@gmail.com"
             // Attach logs to the email
             archiveArtifacts 'logs/**'
         }
@@ -61,7 +61,7 @@ pipeline {
             // Send email notification on failure
             emailext subject: "Pipeline Failed",
                       body: "Pipeline run failed!",
-                      to: "your@email.com"
+                      to: "chathurikadeshani094@gmail.com"
             // Attach logs to the email
             archiveArtifacts 'logs/**'
         }
