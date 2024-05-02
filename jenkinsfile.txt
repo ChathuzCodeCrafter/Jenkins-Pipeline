@@ -1,29 +1,68 @@
 pipeline {
-    agent any 
+    agent any
+    
     stages {
-        stage("Build") {
+        stage('Build') {
             steps {
-                echo "Building....."
+                // Build the code using Maven
+                sh 'mvn clean install'
             }
-            post {
-                always {
-                    mail to: "chathurikadeshani094@gmail.com",
-                    subject: "Build status Email",
-                    body: "Build log attached!"
+        }
+        stage('Unit and Integration Tests') {
+            steps {
+                // Run unit tests
+                sh 'mvn test'
+                // Run integration tests
+                sh 'mvn integration-test'
+            }
+        }
+        stage('Code Analysis') {
+            steps {
+                // Run code analysis using SonarQube scanner
+                withSonarQubeEnv('SonarQube') {
+                    sh 'mvn sonar:sonar'
                 }
             }
         }
-    
-        stage("Test") {
+        stage('Security Scan') {
             steps {
-                echo "Testing...."
+                // Perform security scan using OWASP Dependency-Check
+                sh 'mvn dependency-check:check'
             }
         }
-        
-        stage ("Deploy") {
+        stage('Deploy to Staging') {
             steps {
-                echo "Deploying....."
+                // Deploy to staging server using SSH
+                sshagent(credentials: ['staging-server-ssh-key']) {
+                    sh 'ssh user@staging-server "cd /path/to/app && git pull origin master && mvn clean install && ./deploy.sh"'
+                }
             }
+        }
+        stage('Integration Tests on Staging') {
+            steps {
+                // Run integration tests on staging environment
+                sh 'mvn integration-test'
+            }
+        }
+        stage('Deploy to Production') {
+            steps {
+                // Deploy to production server using SSH
+                sshagent(credentials: ['production-server-ssh-key']) {
+                    sh 'ssh user@production-server "cd /path/to/app && git pull origin master && mvn clean install && ./deploy.sh"'
+                }
+            }
+        }
+    }
+    
+    post {
+        always {
+            // Send email notification
+            emailext(
+                subject: "${currentBuild.result == 'SUCCESS' ? 'SUCCESS' : 'FAILURE'}: Jenkins Pipeline ${currentBuild.displayName}",
+                body: "Pipeline ${currentBuild.result == 'SUCCESS' ? 'succeeded' : 'failed'}.",
+                attachLog: true,
+                to: 'chathurikadeshani094@gmail.com'
+            )
         }
     }
 }
