@@ -21,12 +21,12 @@ pipeline {
             post {
                 success {
                     
-                          mail to: "chathurikadeshani094@gmail.com"
+                          mail to: "chathurikadeshani094@gmail.com",
                           subject: "Test status Email",
                           body: "Unit and Integration Tests passed successfully!"
                 }
                 failure {
-                      mail to: "chathurikadeshani094@gmail.com"
+                      mail to: "chathurikadeshani094@gmail.com",
                        subject: "Test status Email",
                         body: "Unit and Integration Tests Failed!"
                 }
@@ -45,12 +45,12 @@ pipeline {
             }
             post {
                 success {
-                     mail to: "chathurikadeshani094@gmail.com"
+                     mail to: "chathurikadeshani094@gmail.com",
                           subject: "Test status Email",
                           body: "Security Scan passed successfully!"
                 }
                 failure {
-                    mail to: "chathurikadeshani094@gmail.com"
+                    mail to: "chathurikadeshani094@gmail.com",
                        subject: "Test status Email",
                         body: "Security Scan Failed!"
                 }
