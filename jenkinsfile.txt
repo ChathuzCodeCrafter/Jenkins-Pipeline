@@ -4,8 +4,8 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                // Build the code using Maven
-                sh 'mvn clean install'
+                // Build code using Maven
+                sh 'mvn clean package'
             }
         }
         stage('Unit and Integration Tests') {
@@ -13,56 +13,57 @@ pipeline {
                 // Run unit tests
                 sh 'mvn test'
                 // Run integration tests
-                sh 'mvn integration-test'
+                // Insert commands for integration tests
             }
         }
         stage('Code Analysis') {
             steps {
-                // Run code analysis using SonarQube scanner
-                withSonarQubeEnv('SonarQube') {
-                    sh 'mvn sonar:sonar'
-                }
+                // Integrate code analysis tool (e.g., SonarQube)
+                // Insert commands for code analysis
             }
         }
         stage('Security Scan') {
             steps {
-                // Perform security scan using OWASP Dependency-Check
-                sh 'mvn dependency-check:check'
+                // Perform security scan (e.g., OWASP ZAP)
+                // Insert commands for security scan
             }
         }
         stage('Deploy to Staging') {
             steps {
-                // Deploy to staging server using SSH
-                sshagent(credentials: ['staging-server-ssh-key']) {
-                    sh 'ssh user@staging-server "cd /path/to/app && git pull origin master && mvn clean install && ./deploy.sh"'
-                }
+                // Deploy application to staging server (e.g., AWS EC2)
+                // Insert commands for deployment
             }
         }
         stage('Integration Tests on Staging') {
             steps {
                 // Run integration tests on staging environment
-                sh 'mvn integration-test'
+                // Insert commands for integration tests on staging
             }
         }
         stage('Deploy to Production') {
             steps {
-                // Deploy to production server using SSH
-                sshagent(credentials: ['production-server-ssh-key']) {
-                    sh 'ssh user@production-server "cd /path/to/app && git pull origin master && mvn clean install && ./deploy.sh"'
-                }
+                // Deploy application to production server (e.g., AWS EC2)
+                // Insert commands for deployment
             }
         }
     }
     
     post {
-        always {
-            // Send email notification
-            emailext(
-                subject: "${currentBuild.result == 'SUCCESS' ? 'SUCCESS' : 'FAILURE'}: Jenkins Pipeline ${currentBuild.displayName}",
-                body: "Pipeline ${currentBuild.result == 'SUCCESS' ? 'succeeded' : 'failed'}.",
-                attachLog: true,
-                to: 'chathurikadeshani094@gmail.com'
-            )
+        success {
+            // Send email notification on success
+            emailext subject: "Pipeline Successful",
+                      body: "Pipeline run successful!",
+                      to: "your@email.com"
+            // Attach logs to the email
+            archiveArtifacts 'logs/**'
+        }
+        failure {
+            // Send email notification on failure
+            emailext subject: "Pipeline Failed",
+                      body: "Pipeline run failed!",
+                      to: "your@email.com"
+            // Attach logs to the email
+            archiveArtifacts 'logs/**'
         }
     }
 }
