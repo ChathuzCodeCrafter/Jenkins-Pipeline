@@ -17,7 +17,6 @@ pipeline {
                         to: "chathurikadeshani094@gmail.com",
                         subject: "Test status Email",
                         body: "Unit and Integration Tests passed successfully!",
-                        attach: true
                     )
                 }
                 failure {
@@ -25,7 +24,6 @@ pipeline {
                         to: "chathurikadeshani094@gmail.com",
                         subject: "Test status Email",
                         body: "Unit and Integration Tests Failed!",
-                        attach: true
                     )
                 }
             }
@@ -47,7 +45,6 @@ pipeline {
                         to: "chathurikadeshani094@gmail.com",
                         subject: "Security Scan status Email",
                         body: "Security Scan passed successfully!",
-                        attach: true
                     )
                 }
                 failure {
@@ -55,7 +52,6 @@ pipeline {
                         to: "chathurikadeshani094@gmail.com",
                         subject: "Security Scan Email",
                         body: "Security Scan Failed!",
-                        attach: true
                     )
                 }
             }
@@ -85,13 +81,13 @@ pipeline {
             emailext body: "Build ${currentBuild.fullDisplayName} succeeded",
                         subject: "${env.JOB_NAME} - Build #${env.BUILD_NUMBER} - Successful",
                         to: 'chathurikadeshani094@gmail.com',
-                        attach: true
+                        attachmentsPattern: '**/*.log'
         }
         failure {
             emailext body: "Build ${currentBuild.fullDisplayName} failed",
                         subject: "${env.JOB_NAME} - Build #${env.BUILD_NUMBER} - Failed",
                         to: 'chathurikadeshani094@gmail.com',
-                        attach: true
+                        attachmentsPattern: '**/*.log'
         }
     }
 }
