@@ -84,7 +84,7 @@ pipeline {
                     to: 'chathurikadeshani094@gmail.com',
                     subject: "Job '${env.JOB_NAME}' (${env.BUILD_NUMBER}) failed",
                     body: "Please visit ${env.BUILD_URL} for further information",
-                    attachLog: true
+                     attachmentsPattern: '**/build.log' // Specify the pattern to include build logs
                 )
             }
         }
@@ -94,7 +94,7 @@ pipeline {
                     to: 'chathurikadeshani094@gmail.com',
                     subject: "Job '${env.JOB_NAME}' (${env.BUILD_NUMBER}) success.",
                     body: "Please visit ${env.BUILD_URL} for further information.",
-                    attachLog: true
+                     attachmentsPattern: '**/build.log' // Specify the pattern to include build logs
                 )
             }
         }
