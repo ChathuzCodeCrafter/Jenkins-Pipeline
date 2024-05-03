@@ -13,16 +13,18 @@ pipeline {
             }
             post {
                 success {
-                    mail to: "chathurikadeshani094@gmail.com",
-                        subject: "Test status Email",
-                        attachLog: true,
-                        body: "Unit and Integration Tests passed successfully!"
+                    emailext (
+                        subject: "Test Status: Successful",
+                        body: "Unit and Integration Tests passed successfully!",
+                        attachLog: true
+                    )
                 }
                 failure {
-                        mail to: "chathurikadeshani094@gmail.com",
-                        subject: "Test status Email",
-                        attachLog: true,
-                        body: "Unit and Integration Tests Failed!"
+                    emailext (
+                        subject: "Test Status: Failed",
+                        body: "Unit and Integration Tests Failed!",
+                        attachLog: true
+                    )
                 }
             }
         }
@@ -39,14 +41,18 @@ pipeline {
             }
             post {
                 success {
-                    mail to: "chathurikadeshani094@gmail.com",
+                    emailext (
+                        to: "chathurikadeshani094@gmail.com",
                         subject: "Security Scan status Email",
                         body: "Security Scan passed successfully!"
+                    )
                 }
                 failure {
-                   mail to: "chathurikadeshani094@gmail.com",
+                    emailext (
+                        to: "chathurikadeshani094@gmail.com",
                         subject: "Security Scan Email",
                         body: "Security Scan Failed!"
+                    )
                 }
             }
         }
