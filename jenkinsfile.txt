@@ -2,22 +2,30 @@ pipeline {
     agent any
     stages {
         stage('Testing') {
-            steps{
-               bat "del test.zip"
-               zip zipFile: 'test.zip', archive: false, dir: 'directory pattern as per your structure'
+            steps {
+                sh 'chmod +x mvnw'
+                sh './mvnw clean verify serenity:aggregate'
             }
         }
     }
     post {
         failure {
-            emailext attachmentsPattern: 'test.zip', body: '''${SCRIPT, template="groovy-html.template"}''', 
-                    subject: "${env.JOB_NAME} - Build # ${env.BUILD_NUMBER} - Failed", 
-                    mimeType: 'text/html',to: "chathurikadeshani094@gmail.com"
+            script {
+                mail (to: 'chathurikadeshani094@gmail.com',
+                        subject: "Job '${env.JOB_NAME}' (${env.BUILD_NUMBER}) failed",
+                        body: "Please visit ${env.BUILD_URL} for further information"
+                );
+                }
             }
          success {
-               emailext attachmentsPattern: 'test.zip', body: '''${SCRIPT, template="groovy-html.template"}''', 
-                    subject: "${env.JOB_NAME} - Build # ${env.BUILD_NUMBER} - Successful", 
-                    mimeType: 'text/html',to: "chathurikadeshani094@gmail.com"
+             script {
+                mail (to: 'chathurikadeshani094@gmail.com',
+                        subject: "Job '${env.JOB_NAME}' (${env.BUILD_NUMBER}) success.",
+                        body: "Please visit ${env.BUILD_URL} for further information.",
+
+
+                  );
+                }
           }      
     }
 }
