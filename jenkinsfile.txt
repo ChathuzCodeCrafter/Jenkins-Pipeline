@@ -16,13 +16,13 @@ pipeline {
                     
                           mail to: "chathurikadeshani094@gmail.com",
                           subject: "Test status Email",
-                          mail ext attachLog: true,
+                          attachLog: true,
                           body: "Unit and Integration Tests passed successfully!"
                 }
                 failure {
                       mail to: "chathurikadeshani094@gmail.com",
                        subject: "Test status Email",
-                        mail ext attachLog: true,
+                        attachLog: true,
                         body: "Unit and Integration Tests Failed!"
                 }
             }
