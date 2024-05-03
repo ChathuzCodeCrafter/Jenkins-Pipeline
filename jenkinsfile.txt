@@ -16,14 +16,16 @@ pipeline {
                     emailext (
                         subject: "Test Status: Successful",
                         body: "Unit and Integration Tests passed successfully!",
-                        attachLog: true
+                        attachLog: true,
+                       debug: true
                     )
                 }
                 failure {
                     emailext (
                         subject: "Test Status: Failed",
                         body: "Unit and Integration Tests Failed!",
-                        attachLog: true
+                        attachLog: true,
+                        debug: true
                     )
                 }
             }
