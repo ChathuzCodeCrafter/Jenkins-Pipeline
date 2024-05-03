@@ -77,19 +77,22 @@ pipeline {
     }
   
     post {
-        success {
-            mail( body: "Build ${currentBuild.fullDisplayName} succeeded",
-                        subject: "${env.JOB_NAME} - Build #${env.BUILD_NUMBER} - Successful",
-                        to: 'chathurikadeshani094@gmail.com',
-                        attachmentsPattern: '**/*.log'
-)
-        }
-        failure {
-           mail( body: "Build ${currentBuild.fullDisplayName} failed",
-                        subject: "${env.JOB_NAME} - Build #${env.BUILD_NUMBER} - Failed",
-                        to: 'chathurikadeshani094@gmail.com',
-                        attachmentsPattern: '**/*.log'
-)
-        }
+    success {
+        mail(
+            body: "Build ${currentBuild.fullDisplayName} succeeded",
+            subject: "${env.JOB_NAME} - Build #${env.BUILD_NUMBER} - Successful",
+            to: 'chathurikadeshani094@gmail.com',
+            attachments: '**/*.log'
+        )
+    }
+    failure {
+        mail(
+            body: "Build ${currentBuild.fullDisplayName} failed",
+            subject: "${env.JOB_NAME} - Build #${env.BUILD_NUMBER} - Failed",
+            to: 'chathurikadeshani094@gmail.com',
+            attachments: '**/*.log'
+        )
     }
 }
+
+
