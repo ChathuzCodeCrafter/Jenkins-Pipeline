@@ -77,26 +77,19 @@ pipeline {
             }
         }
     }
+  
     post {
-        failure {
-            script {
-                mail(
-                    to: 'chathurikadeshani094@gmail.com',
-                    subject: "Job '${env.JOB_NAME}' (${env.BUILD_NUMBER}) failed",
-                    body: "Please visit ${env.BUILD_URL} for further information",
-                   attachmentsPattern: 'build.log'
-                )
-            }
-        }
         success {
-            script {
-                mail(
-                    to: 'chathurikadeshani094@gmail.com',
-                    subject: "Job '${env.JOB_NAME}' (${env.BUILD_NUMBER}) success.",
-                    body: "Please visit ${env.BUILD_URL} for further information.",
-                    attachmentsPattern: 'build.log'
-                )
-            }
+            emailext body: "Build ${currentBuild.fullDisplayName} succeeded",
+                        subject: "${env.JOB_NAME} - Build #${env.BUILD_NUMBER} - Successful",
+                        to: 'chathurikadeshani094@gmail.com',
+                        attachLog: true
+        }
+        failure {
+            emailext body: "Build ${currentBuild.fullDisplayName} failed",
+                        subject: "${env.JOB_NAME} - Build #${env.BUILD_NUMBER} - Failed",
+                        to: 'chathurikadeshani094@gmail.com',
+                        attachLog: true
         }
     }
 }
