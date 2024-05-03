@@ -18,6 +18,7 @@ pipeline {
                         body: 'The unit and integration tests completed successfully.',
                         to: 'chathurikadeshani094@gmail.com',
                         attachLog: true
+                   )
                 }
                 failure {
                     emailext (
