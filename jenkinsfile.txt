@@ -41,14 +41,14 @@ pipeline {
             }
             post {
                 success {
-                    emailext(
+                    mail(
                         to: "chathurikadeshani094@gmail.com",
                         subject: "Security Scan status Email",
                         body: "Security Scan passed successfully!",
                     )
                 }
                 failure {
-                    emailext(
+                    mail(
                         to: "chathurikadeshani094@gmail.com",
                         subject: "Security Scan Email",
                         body: "Security Scan Failed!",
@@ -78,16 +78,18 @@ pipeline {
   
     post {
         success {
-            emailext body: "Build ${currentBuild.fullDisplayName} succeeded",
+            mail( body: "Build ${currentBuild.fullDisplayName} succeeded",
                         subject: "${env.JOB_NAME} - Build #${env.BUILD_NUMBER} - Successful",
                         to: 'chathurikadeshani094@gmail.com',
                         attachmentsPattern: '**/*.log'
+)
         }
         failure {
-            emailext body: "Build ${currentBuild.fullDisplayName} failed",
+           mail( body: "Build ${currentBuild.fullDisplayName} failed",
                         subject: "${env.JOB_NAME} - Build #${env.BUILD_NUMBER} - Failed",
                         to: 'chathurikadeshani094@gmail.com',
                         attachmentsPattern: '**/*.log'
+)
         }
     }
 }
