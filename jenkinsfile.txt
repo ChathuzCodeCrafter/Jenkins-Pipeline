@@ -1,31 +1,102 @@
 pipeline {
-    agent any
+    agent any 
     stages {
-        stage('Testing') {
+        stage("Build") {
             steps {
-                sh 'chmod +x mvnw'
-                sh './mvnw clean verify serenity:aggregate'
+                echo "Building....." // Task: Build the code using Maven
+            }
+        }
+        
+        stage("Unit and Integration Tests") {
+            steps {
+                echo "Running unit and integration tests....." // Task: Run unit and integration tests using Maven
+            }
+            post {
+                success {
+                    emailext(
+                        to: "chathurikadeshani094@gmail.com",
+                        subject: "Test status Email",
+                        body: "Unit and Integration Tests passed successfully!",
+                        attachLog: true
+                    )
+                }
+                failure {
+                    emailext(
+                        to: "chathurikadeshani094@gmail.com",
+                        subject: "Test status Email",
+                        body: "Unit and Integration Tests Failed!",
+                        attachLog: true
+                    )
+                }
+            }
+        }
+        
+        stage("Code Analysis") {
+            steps {
+                echo "Performing code analysis....." // Task: Integrate code analysis tool, e.g., SonarQube
+            }
+        }
+        
+        stage("Security Scan") {
+            steps {
+                echo "Performing security scan....." // Task: Perform security scan using OWASP ZAP or SonarQube
+            }
+            post {
+                success {
+                    emailext(
+                        to: "chathurikadeshani094@gmail.com",
+                        subject: "Security Scan status Email",
+                        body: "Security Scan passed successfully!"
+                    )
+                }
+                failure {
+                    emailext(
+                        to: "chathurikadeshani094@gmail.com",
+                        subject: "Security Scan Email",
+                        body: "Security Scan Failed!"
+                    )
+                }
+            }
+        }
+        
+        stage("Deploy to Staging") {
+            steps {
+                echo "Deploying to staging server....." // Task: Deploy to staging server using Jenkins Deploy Plugin or AWS CLI
+            }
+        }
+        
+        stage("Integration Tests on Staging") {
+            steps {
+                echo "Running integration tests on staging environment....." // Task: Run integration tests on staging environment
+            }
+        }
+        
+        stage("Deploy to Production") {
+            steps {
+                echo "Deploying to production server....." // Task: Deploy to production server using Jenkins Deploy Plugin or AWS CLI
             }
         }
     }
     post {
         failure {
             script {
-                mail (to: 'chathurikadeshani094@gmail.com',
-                        subject: "Job '${env.JOB_NAME}' (${env.BUILD_NUMBER}) failed",
-                        body: "Please visit ${env.BUILD_URL} for further information"
-                );
-                }
+                emailext(
+                    to: 'chathurikadeshani094@gmail.com',
+                    subject: "Job '${env.JOB_NAME}' (${env.BUILD_NUMBER}) failed",
+                    body: "Please visit ${env.BUILD_URL} for further information",
+                    attachLog: true
+                )
             }
-         success {
-             script {
-                mail (to: 'chathurikadeshani094@gmail.com',
-                        subject: "Job '${env.JOB_NAME}' (${env.BUILD_NUMBER}) success.",
-                        body: "Please visit ${env.BUILD_URL} for further information.",
-
-
-                  );
-                }
-          }      
+        }
+        success {
+            script {
+                emailext(
+                    to: 'chathurikadeshani094@gmail.com',
+                    subject: "Job '${env.JOB_NAME}' (${env.BUILD_NUMBER}) success.",
+                    body: "Please visit ${env.BUILD_URL} for further information.",
+                    attachLog: true
+                )
+            }
+        }
     }
 }
