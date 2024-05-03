@@ -13,7 +13,7 @@ pipeline {
             }
             post {
                 success {
-                    emailext(
+                   mail(
                         to: "chathurikadeshani094@gmail.com",
                         subject: "Test status Email",
                         body: "Unit and Integration Tests passed successfully!",
@@ -21,7 +21,7 @@ pipeline {
                     )
                 }
                 failure {
-                    emailext(
+                    mail(
                         to: "chathurikadeshani094@gmail.com",
                         subject: "Test status Email",
                         body: "Unit and Integration Tests Failed!",
