@@ -17,7 +17,7 @@ pipeline {
                         to: "chathurikadeshani094@gmail.com",
                         subject: "Test status Email",
                         body: "Unit and Integration Tests passed successfully!",
-                        attachLog: true
+                        attach: true
                     )
                 }
                 failure {
@@ -25,7 +25,7 @@ pipeline {
                         to: "chathurikadeshani094@gmail.com",
                         subject: "Test status Email",
                         body: "Unit and Integration Tests Failed!",
-                        attachLog: true
+                        attach: true
                     )
                 }
             }
@@ -46,14 +46,16 @@ pipeline {
                     emailext(
                         to: "chathurikadeshani094@gmail.com",
                         subject: "Security Scan status Email",
-                        body: "Security Scan passed successfully!"
+                        body: "Security Scan passed successfully!",
+                        attach: true
                     )
                 }
                 failure {
                     emailext(
                         to: "chathurikadeshani094@gmail.com",
                         subject: "Security Scan Email",
-                        body: "Security Scan Failed!"
+                        body: "Security Scan Failed!",
+                        attach: true
                     )
                 }
             }
@@ -83,13 +85,13 @@ pipeline {
             emailext body: "Build ${currentBuild.fullDisplayName} succeeded",
                         subject: "${env.JOB_NAME} - Build #${env.BUILD_NUMBER} - Successful",
                         to: 'chathurikadeshani094@gmail.com',
-                        attachLog: true
+                        attach: true
         }
         failure {
             emailext body: "Build ${currentBuild.fullDisplayName} failed",
                         subject: "${env.JOB_NAME} - Build #${env.BUILD_NUMBER} - Failed",
                         to: 'chathurikadeshani094@gmail.com',
-                        attachLog: true
+                        attach: true
         }
     }
 }
